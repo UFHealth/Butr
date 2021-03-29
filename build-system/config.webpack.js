@@ -1,4 +1,5 @@
 const path = require('path')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const mode = isDev ? 'development' : 'production'
@@ -8,7 +9,7 @@ module.exports = {
   mode,
   devtool,
   entry: {
-    Butr: './src/butr.js',
+    Butr: './src/butr.js'
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -22,14 +23,17 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['@babel/preset-env', {
-                modules: false
-              }],
+              [
+                '@babel/preset-env',
+                {
+                  modules: false
+                }
+              ]
             ]
           }
         }
@@ -38,5 +42,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.json']
+  },
+  optimization: {
+    minimize: !isDev,
+    minimizer: isDev ? false : [new TerserPlugin()]
   }
 }

@@ -8,7 +8,7 @@ module.exports = {
   mode,
   devtool,
   entry: {
-    bundle: './example/as-module.js',
+    bundle: './example/as-module.js'
   },
   output: {
     path: path.resolve(__dirname, '../example'),
@@ -22,13 +22,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              ['@babel/preset-env', {
-                // modules: false,
-                // useBuiltIns: 'usage',
-                // corejs: 3
-              }],
-            ]
+            presets: [['@babel/preset-env']]
           }
         }
       }
@@ -36,5 +30,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.json']
+  },
+  optimization: {
+    minimize: !isDev,
+    minimizer: isDev ? false : [new TerserPlugin()]
   }
 }
